@@ -9,7 +9,7 @@ chardet==3.0.4            # via requests
 django-environ==0.4.4
 django-helusers==0.4.2
 django==2.0.5
-djangorestframework==3.8.2  # via drf-oidc-auth
+djangorestframework==3.8.2
 drf-oidc-auth==0.9        # via django-helusers
 future==0.16.0            # via pyjwkest
 idna==2.6                 # via requests

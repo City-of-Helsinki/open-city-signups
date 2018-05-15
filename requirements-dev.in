@@ -12,3 +12,4 @@ pytest-cov
 pytest-django
 rope
 yapf
+factory_boy
