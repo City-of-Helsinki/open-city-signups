@@ -24,7 +24,7 @@ def test_disallowed_methods(user_api_client, signup):
     list_disallowed_methods = ('put', 'patch', 'delete')
     check_disallowed_methods(user_api_client, LIST_URL, list_disallowed_methods)
 
-    detail_disallowed_methods = ('post',)
+    detail_disallowed_methods = ('post', 'put', 'patch')
     check_disallowed_methods(user_api_client, get_detail_url(signup), detail_disallowed_methods)
 
 

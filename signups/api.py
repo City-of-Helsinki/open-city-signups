@@ -1,7 +1,7 @@
 from django.utils.timezone import now
 from django.utils.translation import ugettext_lazy as _
 from django_filters import rest_framework as filters
-from rest_framework import permissions, serializers, viewsets
+from rest_framework import mixins, permissions, serializers, viewsets
 from rest_framework.exceptions import APIException, NotFound
 
 from .models import Signup, SignupTarget
@@ -55,7 +55,8 @@ class SignupFilter(filters.FilterSet):
         return queryset
 
 
-class SignupViewSet(viewsets.ModelViewSet):
+class SignupViewSet(mixins.ListModelMixin, mixins.RetrieveModelMixin, mixins.CreateModelMixin, mixins.DestroyModelMixin,
+                    viewsets.GenericViewSet):
     queryset = Signup.objects.select_related('target')
     serializer_class = SignupSerializer
     permission_classes = (permissions.IsAuthenticated,)
