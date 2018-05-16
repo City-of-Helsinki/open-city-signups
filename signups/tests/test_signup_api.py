@@ -20,6 +20,10 @@ def check_signup_data(data, obj):
     assert data['target'] == obj.target.identifier
 
 
+def test_unauthenticated_user_cannot_access(api_client):
+    get(api_client, LIST_URL, 401)
+
+
 def test_disallowed_methods(user_api_client, signup):
     list_disallowed_methods = ('put', 'patch', 'delete')
     check_disallowed_methods(user_api_client, LIST_URL, list_disallowed_methods)
