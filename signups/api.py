@@ -1,5 +1,6 @@
 from django.utils.timezone import now
 from django.utils.translation import ugettext_lazy as _
+from django_filters import rest_framework as filters
 from rest_framework import permissions, serializers, viewsets
 from rest_framework.exceptions import APIException, NotFound
 
@@ -34,10 +35,31 @@ class SignupAlreadyExists(APIException):
     default_code = 'signup_already_exists'
 
 
+class SignupFilter(filters.FilterSet):
+    include_cancelled = filters.BooleanFilter(method='filter_include_cancelled')
+    target = filters.CharFilter(name='target__identifier')
+
+    class Meta:
+        model = Signup
+        fields = ('include_cancelled', 'target')
+
+    def __init__(self, data=None, *args, **kwargs):
+        data = data.copy()
+        if 'include_cancelled' not in data:
+            data['include_cancelled'] = False
+        super().__init__(data, *args, **kwargs)
+
+    def filter_include_cancelled(self, queryset, name, value):
+        if not value:
+            queryset = queryset.filter(cancelled_at=None)
+        return queryset
+
+
 class SignupViewSet(viewsets.ModelViewSet):
     queryset = Signup.objects.select_related('target')
     serializer_class = SignupSerializer
     permission_classes = (permissions.IsAuthenticated,)
+    filter_class = SignupFilter
 
     def get_queryset(self):
         return self.queryset.filter(user=self.request.user)

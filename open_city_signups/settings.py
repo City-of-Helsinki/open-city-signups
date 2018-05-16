@@ -72,6 +72,7 @@ INSTALLED_APPS = [
     'raven.contrib.django.raven_compat',
     'helusers',
     'rest_framework',
+    'django_filters',
 
     'users',
     'signups',
@@ -113,5 +114,8 @@ REST_FRAMEWORK = {
     'PAGE_SIZE': 100,
     'DEFAULT_PERMISSION_CLASSES': (
         'rest_framework.permissions.IsAuthenticatedOrReadOnly',
+    ),
+    'DEFAULT_FILTER_BACKENDS': (
+        'django_filters.rest_framework.DjangoFilterBackend',
     ),
 }

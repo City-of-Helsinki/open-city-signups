@@ -4,3 +4,4 @@ psycopg2-binary
 raven
 django-helusers
 djangorestframework
+django-filter

@@ -1,3 +1,4 @@
+import pytest
 from django.utils.timezone import now
 from rest_framework.reverse import reverse
 
@@ -102,3 +103,45 @@ def test_cannot_delete_already_cancelled_signup(user_api_client):
     signup = SignupFactory(user=user_api_client.user, cancelled_at=now())
 
     delete(user_api_client, get_detail_url(signup), status_code=404)
+
+
+def test_cancelled_signups_not_visible_by_default(user_api_client):
+    cancelled_signup = SignupFactory(user=user_api_client.user, cancelled_at=now())
+
+    list_data = get(user_api_client, LIST_URL)
+    assert len(list_data['results']) == 0
+
+    get(user_api_client, get_detail_url(cancelled_signup), 404)
+
+
+@pytest.mark.parametrize('true_value', (
+    '=True',
+    '=true',
+    '=1',
+    '=',
+    '',
+    '=actually_anything_goes',
+))
+def test_include_cancelled_filter(user_api_client, signup, true_value):
+    cancelled_signup = SignupFactory(user=user_api_client.user, cancelled_at=now())
+
+    list_data = get(user_api_client, LIST_URL + '?include_cancelled{}&foo=bar'.format(true_value))
+    assert len(list_data['results']) == 2
+
+    list_data = get(user_api_client, LIST_URL + '?include_cancelled=false')
+    assert len(list_data['results']) == 1
+    assert list_data['results'][0]['id'] != cancelled_signup.id
+
+    detail_data = get(user_api_client, get_detail_url(cancelled_signup) + '?include_cancelled{}'.format(true_value))
+    assert detail_data['id'] == cancelled_signup.id
+
+
+def test_target_filter(user_api_client, signup):
+    other_target_signup = SignupFactory(user=user_api_client.user)
+
+    list_data = get(user_api_client, LIST_URL)
+    assert len(list_data['results']) == 2
+
+    list_data = get(user_api_client, LIST_URL + '?target={}'.format(other_target_signup.target.identifier))
+    assert len(list_data['results']) == 1
+    assert list_data['results'][0]['id'] == other_target_signup.id
