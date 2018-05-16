@@ -1,6 +1,7 @@
 from rest_framework.reverse import reverse
 
 from signups.tests.utils import check_disallowed_methods, get
+from signups.tests.factories import SignupFactory
 
 LIST_URL = reverse('signup-list')
 
@@ -33,3 +34,14 @@ def test_get_signup_list(user_api_client, signup):
 def test_get_signup_detail(user_api_client, signup):
     signup_data = get(user_api_client, get_detail_url(signup))
     check_signup_data(signup_data, signup)
+
+
+def test_user_can_see_only_own_signups(user_api_client, signup):
+    other_user_signup = SignupFactory()
+
+    data = get(user_api_client, LIST_URL)
+    results = data['results']
+    assert len(results) == 1
+    assert results[0]['id'] == signup.id
+
+    get(user_api_client, get_detail_url(other_user_signup), status_code=404)

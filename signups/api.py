@@ -1,4 +1,4 @@
-from rest_framework import serializers, viewsets
+from rest_framework import permissions, serializers, viewsets
 
 from .models import Signup, SignupTarget
 
@@ -28,3 +28,7 @@ class SignupSerializer(serializers.ModelSerializer):
 class SignupViewSet(viewsets.ModelViewSet):
     queryset = Signup.objects.select_related('target')
     serializer_class = SignupSerializer
+    permission_classes = (permissions.IsAuthenticated,)
+
+    def get_queryset(self):
+        return self.queryset.filter(user=self.request.user)
