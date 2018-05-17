@@ -91,7 +91,9 @@ class SignupViewSet(mixins.ListModelMixin, mixins.RetrieveModelMixin, mixins.Cre
         return self.queryset.filter(user=self.request.user)
 
     def perform_create(self, serializer):
-        queryset = Signup.objects.filter(user=self.request.user, target=serializer.validated_data['target'])
+        queryset = Signup.objects.filter(
+            user=self.request.user, target=serializer.validated_data['target'], cancelled_at=None
+        )
 
         if queryset.exists():
             raise SignupAlreadyExists()

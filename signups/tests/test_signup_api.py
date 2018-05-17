@@ -149,3 +149,18 @@ def test_target_filter(user_api_client, signup):
     list_data = get(user_api_client, LIST_URL + '?target={}'.format(other_target_signup.target.identifier))
     assert len(list_data['results']) == 1
     assert list_data['results'][0]['id'] == other_target_signup.id
+
+
+def test_signup_again_after_cancelled(user_api_client, signup):
+    signup.cancelled_at = now()
+    signup.save(update_fields=('cancelled_at',))
+
+    post(user_api_client, LIST_URL, {'target': signup.target.identifier})
+
+    assert Signup.objects.count() == 2
+
+    new_signup = Signup.objects.latest('id')
+    assert new_signup.user == user_api_client.user
+    assert new_signup.target == signup.target
+    assert new_signup.cancelled_at is None
+    assert new_signup.created_at > signup.created_at
