@@ -1,0 +1,24 @@
+sudo: false
+language: python
+services:
+  - postgresql
+
+cache:
+  directories:
+    - "$HOME/.cache/pip"
+env:
+  global:
+    - DEBUG=1
+    - DATABASE_URL=postgres://postgres:@localhost/open_city_signups
+
+python: 3.4
+install:
+  - pip install -U pip
+  - pip install -r requirements.txt -r requirements-dev.txt
+before_script:
+  - psql -c 'create database open_city_signups;' -U postgres
+
+script:
+  - flake8
+  - py.test -ra -vvv --cov
+  - isort -c
