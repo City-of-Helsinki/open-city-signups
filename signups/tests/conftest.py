@@ -1,3 +1,4 @@
+import factory.random
 import pytest
 from rest_framework.test import APIClient
 
@@ -7,6 +8,11 @@ from signups.tests.factories import SignupFactory, SignupTargetFactory, UserFact
 @pytest.fixture(autouse=True)
 def no_more_mark_django_db(transactional_db):
     pass
+
+
+@pytest.fixture(autouse=True)
+def set_random_seed():
+    factory.random.reseed_random(777)
 
 
 @pytest.fixture
