@@ -16,13 +16,22 @@ class SignupTargetSerializer(serializers.ModelSerializer):
 
 
 class SignupTargetViewSet(viewsets.ReadOnlyModelViewSet):
+    """
+    list: Return a list of all signup targets.
+
+    retrieve: Return the given sign-up target.
+    """
     queryset = SignupTarget.objects.all()
     serializer_class = SignupTargetSerializer
     lookup_field = 'identifier'
 
 
 class SignupSerializer(serializers.ModelSerializer):
-    target = serializers.SlugRelatedField(slug_field='identifier', queryset=SignupTarget.objects.all())
+    target = serializers.SlugRelatedField(
+        slug_field='identifier', queryset=SignupTarget.objects.all(),
+        help_text=_('The identifier of the sign-up target for the sign-up.')
+    )
+    cancelled_at = serializers.ReadOnlyField()
 
     class Meta:
         model = Signup
@@ -36,8 +45,14 @@ class SignupAlreadyExists(APIException):
 
 
 class SignupFilter(filters.FilterSet):
-    include_cancelled = filters.BooleanFilter(method='filter_include_cancelled')
-    target = filters.CharFilter(name='target__identifier')
+    include_cancelled = filters.BooleanFilter(method='filter_include_cancelled', help_text=_(
+        'Include also cancelled sign-ups. '
+        'Accepts boolean values "true" and "false". '
+        'Just giving the key without a value is also interpreted as true.'
+    ))
+    target = filters.CharFilter(name='target__identifier', help_text=_(
+        'Include only sign-ups for the given sign-up target. The given value should be a sign-up target identifier.'
+    ))
 
     class Meta:
         model = Signup
@@ -57,6 +72,16 @@ class SignupFilter(filters.FilterSet):
 
 class SignupViewSet(mixins.ListModelMixin, mixins.RetrieveModelMixin, mixins.CreateModelMixin, mixins.DestroyModelMixin,
                     viewsets.GenericViewSet):
+    """
+
+    list: Return a list of all the request user's sign-ups. By default cancelled sign-ups aren't included.
+
+    retrieve: Return the given sign-up.
+
+    create: Create a new sign-up instance.
+
+    delete: Cancel the given sign-up.
+    """
     queryset = Signup.objects.select_related('target')
     serializer_class = SignupSerializer
     permission_classes = (permissions.IsAuthenticated,)
