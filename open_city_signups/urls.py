@@ -13,4 +13,5 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('v1/', include(router.urls)),
     path('docs/', include_docs_urls(title='Open City sign-ups')),
+    path('accounts/', include('allauth.urls')),
 ]
