@@ -2,6 +2,7 @@ import os
 
 import environ
 import raven
+from django.utils.translation import ugettext_lazy as _
 
 checkout_dir = environ.Path(__file__) - 2
 assert os.path.exists(checkout_dir('manage.py'))
@@ -28,6 +29,7 @@ env = environ.Env(
     OIDC_API_TOKEN_API_SCOPE_PREFIX=(str, 'API_SCOPE_PREFIX_UNSET'),
     OIDC_API_TOKEN_REQUIRE_API_SCOPE_FOR_AUTHENTICATION=(str, True),
     OIDC_API_TOKEN_ISSUER=(str, 'ISSUER_UNSET'),
+    NOTIFICATIONS_ENABLED=(bool, False),
 )
 if os.path.exists(env_file):
     env.read_env(env_file)
@@ -65,6 +67,9 @@ USE_I18N = True
 USE_L10N = True
 USE_TZ = True
 
+LANGUAGES = (
+    ('fi', _('Finnish')),
+)
 
 INSTALLED_APPS = [
     'helusers',
@@ -85,9 +90,12 @@ INSTALLED_APPS = [
     'rest_framework',
     'django_filters',
     'corsheaders',
+    'parler',
+    'anymail',
 
     'users',
     'signups',
+    'notifications',
 ]
 
 MIDDLEWARE = [
@@ -141,6 +149,11 @@ OIDC_API_TOKEN_AUTH = {
 }
 
 CORS_ORIGIN_ALLOW_ALL = True
+PARLER_LANGUAGES = {
+    SITE_ID: (
+        {'code': 'fi'},
+    )
+}
 
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
@@ -155,6 +168,8 @@ REST_FRAMEWORK = {
         'django_filters.rest_framework.DjangoFilterBackend',
     ),
 }
+
+NOTIFICATIONS_ENABLED = env('NOTIFICATIONS_ENABLED')
 
 # local_settings.py can be used to override environment-specific settings
 # like database and email that differ between development and production.

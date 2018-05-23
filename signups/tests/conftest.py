@@ -15,6 +15,12 @@ def set_random_seed():
     factory.random.reseed_random(777)
 
 
+@pytest.fixture(autouse=True)
+def email_setup(settings):
+    settings.EMAIL_BACKEND = 'django.core.mail.backends.locmem.EmailBackend'
+    settings.NOTIFICATIONS_ENABLED = True
+
+
 @pytest.fixture
 def api_client():
     return APIClient()

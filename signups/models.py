@@ -1,6 +1,10 @@
 from django.conf import settings
 from django.db import models
+from django.utils import translation
 from django.utils.translation import ugettext_lazy as _
+
+from notifications.utils import DEFAULT_LANGUAGE
+from signups.utils import localize_datetime
 
 
 class SignupTarget(models.Model):
@@ -35,7 +39,17 @@ class Signup(models.Model):
         ordering = ('id',)
 
     def __str__(self):
-        text = '{} {} {}'.format(self. user, self.target, self.created_at.replace(microsecond=0))
+        text = '{} {} {}'.format(self. user, self.target, localize_datetime(self.created_at))
         if self.cancelled_at:
-            text = '{} cancelled {}'.format(text, self.cancelled_at.replace(microsecond=0))
+            text = '{} cancelled {}'.format(text, localize_datetime(self.cancelled_at))
         return text
+
+    def get_notification_context(self, language=DEFAULT_LANGUAGE):
+        with translation.override(language):
+            return {
+                'created_at': localize_datetime(self.created_at),
+                'cancelled_at': localize_datetime(self.cancelled_at),
+                'user__first_name': self.user.first_name,
+                'user__last_name': self.user.last_name,
+                'target__name': self.target.name,
+            }
