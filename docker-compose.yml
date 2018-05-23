@@ -18,7 +18,7 @@ services:
         env_file:
             - ./.env
         environment:
-            DATABASE_URL: postgres://open_city_signups:open_city_signups@postgres10-1/open_city_signups
+            DATABASE_URL: postgres://open_city_signups:open_city_signups@signups-db/open_city_signups
         volumes:
             - .:/code
             - django-media-volume:/var/media/
