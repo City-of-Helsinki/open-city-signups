@@ -10,7 +10,7 @@ services:
             - 5432:5432
         volumes:
             - postgres-data-volume:/var/lib/postgresql/data
-        container_name: postgres10-1
+        container_name: signups-db
 
     django:
         build: .
