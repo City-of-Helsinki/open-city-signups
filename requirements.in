@@ -8,3 +8,6 @@ django-filter
 coreapi
 django-allauth
 django-cors-headers
+django-parler
+django-enumfields
+django-anymail

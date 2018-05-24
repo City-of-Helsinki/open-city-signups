@@ -10,10 +10,13 @@ coreapi==2.3.3
 coreschema==0.0.4         # via coreapi
 defusedxml==0.5.0         # via python3-openid
 django-allauth==0.36.0
+django-anymail==2.2
 django-cors-headers==2.2.0
+django-enumfields==0.10.0
 django-environ==0.4.4
 django-filter==1.1.0
 django-helusers==0.4.2
+django-parler==1.9.2
 django==2.0.5
 djangorestframework==3.8.2
 drf-oidc-auth==0.9        # via django-helusers
@@ -22,7 +25,7 @@ idna==2.6                 # via requests
 itypes==1.1.0             # via coreapi
 jinja2==2.10              # via coreschema
 markupsafe==1.0           # via jinja2
-oauthlib==2.0.7           # via requests-oauthlib
+oauthlib==2.1.0           # via requests-oauthlib
 psycopg2-binary==2.7.4
 pycryptodomex==3.6.1      # via pyjwkest
 pyjwkest==1.4.0           # via drf-oidc-auth
@@ -30,7 +33,7 @@ python3-openid==3.1.0     # via django-allauth
 pytz==2018.4              # via django
 raven==6.8.0
 requests-oauthlib==0.8.0  # via django-allauth
-requests==2.18.4          # via coreapi, django-allauth, django-helusers, pyjwkest, requests-oauthlib
-six==1.11.0               # via django-environ, pyjwkest
+requests==2.18.4          # via coreapi, django-allauth, django-anymail, django-helusers, pyjwkest, requests-oauthlib
+six==1.11.0               # via django-anymail, django-environ, pyjwkest
 uritemplate==3.0.0        # via coreapi
 urllib3==1.22             # via requests
