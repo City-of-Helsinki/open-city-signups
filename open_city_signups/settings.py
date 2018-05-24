@@ -84,6 +84,7 @@ INSTALLED_APPS = [
     'allauth.socialaccount',
     'rest_framework',
     'django_filters',
+    'corsheaders',
 
     'users',
     'signups',
@@ -92,6 +93,7 @@ INSTALLED_APPS = [
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -138,6 +140,8 @@ OIDC_API_TOKEN_AUTH = {
     'ISSUER': env.str('OIDC_API_TOKEN_ISSUER'),
 }
 
+CORS_ORIGIN_ALLOW_ALL = True
+
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'helusers.oidc.ApiTokenAuthentication',
@@ -151,3 +155,11 @@ REST_FRAMEWORK = {
         'django_filters.rest_framework.DjangoFilterBackend',
     ),
 }
+
+# local_settings.py can be used to override environment-specific settings
+# like database and email that differ between development and production.
+local_settings_path = os.path.join(checkout_dir(), "local_settings.py")
+if os.path.exists(local_settings_path):
+    with open(local_settings_path) as fp:
+        code = compile(fp.read(), local_settings_path, 'exec')
+    exec(code, globals(), locals())
