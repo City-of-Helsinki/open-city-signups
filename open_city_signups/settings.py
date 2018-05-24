@@ -84,6 +84,7 @@ INSTALLED_APPS = [
     'allauth.socialaccount',
     'rest_framework',
     'django_filters',
+    'corsheaders',
 
     'users',
     'signups',
@@ -92,6 +93,7 @@ INSTALLED_APPS = [
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -137,6 +139,8 @@ OIDC_API_TOKEN_AUTH = {
     'REQUIRE_API_SCOPE_FOR_AUTHENTICATION': env.str('OIDC_API_TOKEN_REQUIRE_API_SCOPE_FOR_AUTHENTICATION'),
     'ISSUER': env.str('OIDC_API_TOKEN_ISSUER'),
 }
+
+CORS_ORIGIN_ALLOW_ALL = True
 
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
