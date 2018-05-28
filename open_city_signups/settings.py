@@ -125,6 +125,9 @@ TEMPLATES = [
     },
 ]
 
+# TODO: Make this editable from the admin
+DEFAULT_FROM_EMAIL = "kuva.helsinkisovellus@hel.fi"
+
 # Social auth
 #
 SITE_ID = 1
