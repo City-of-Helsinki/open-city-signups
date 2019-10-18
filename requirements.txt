@@ -18,7 +18,7 @@ django-filter==1.1.0
 django-helusers==0.4.2
 django-parler==1.9.2
 django==2.0.5
-djangorestframework==3.8.2
+djangorestframework==3.9.1
 drf-oidc-auth==0.9        # via django-helusers
 future==0.16.0            # via pyjwkest
 idna==2.6                 # via requests
