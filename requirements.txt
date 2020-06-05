@@ -6,19 +6,19 @@
 #
 certifi==2018.4.16        # via requests
 chardet==3.0.4            # via requests
-coreapi==2.3.3
+coreapi==2.3.3            # via -r requirements.in
 coreschema==0.0.4         # via coreapi
 defusedxml==0.5.0         # via python3-openid
-django-allauth==0.36.0
-django-anymail==2.2
-django-cors-headers==2.2.0
-django-enumfields==0.10.0
-django-environ==0.4.4
-django-filter==1.1.0
-django-helusers==0.4.2
-django-parler==1.9.2
-django==2.0.5
-djangorestframework==3.8.2
+django-allauth==0.36.0    # via -r requirements.in
+django-anymail==2.2       # via -r requirements.in
+django-cors-headers==2.2.0  # via -r requirements.in
+django-enumfields==0.10.0  # via -r requirements.in
+django-environ==0.4.4     # via -r requirements.in
+django-filter==1.1.0      # via -r requirements.in
+django-helusers==0.4.2    # via -r requirements.in
+django-parler==1.9.2      # via -r requirements.in
+django==2.2.13            # via -r requirements.in, django-allauth, django-anymail, django-environ, django-helusers, drf-oidc-auth
+djangorestframework==3.8.2  # via -r requirements.in, drf-oidc-auth
 drf-oidc-auth==0.9        # via django-helusers
 future==0.16.0            # via pyjwkest
 idna==2.6                 # via requests
@@ -26,14 +26,15 @@ itypes==1.1.0             # via coreapi
 jinja2==2.10              # via coreschema
 markupsafe==1.0           # via jinja2
 oauthlib==2.1.0           # via requests-oauthlib
-psycopg2-binary==2.7.4
+psycopg2-binary==2.7.4    # via -r requirements.in
 pycryptodomex==3.6.1      # via pyjwkest
 pyjwkest==1.4.0           # via drf-oidc-auth
 python3-openid==3.1.0     # via django-allauth
 pytz==2018.4              # via django
-raven==6.8.0
+raven==6.8.0              # via -r requirements.in
 requests-oauthlib==0.8.0  # via django-allauth
 requests==2.18.4          # via coreapi, django-allauth, django-anymail, django-helusers, pyjwkest, requests-oauthlib
 six==1.11.0               # via django-anymail, django-environ, pyjwkest
+sqlparse==0.3.1           # via django
 uritemplate==3.0.0        # via coreapi
 urllib3==1.22             # via requests
